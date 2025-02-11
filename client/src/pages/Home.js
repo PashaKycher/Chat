@@ -23,6 +23,7 @@ const Home = () => {
       const URL = `${process.env.REACT_APP_BACKEND_URL}/api/user-details`
       const res = await axios({
         url: URL,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         withCredentials: true
       })
       // to state user details

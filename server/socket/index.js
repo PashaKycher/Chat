@@ -28,6 +28,7 @@ io.on('connection', async (socket) => {
     console.log("User token:", socket.handshake.auth.token);
     // current user details
     const user = await getUserDetailsFromToken(token)
+    console.log("user", user)
     //create room
     socket.join(user?._id?.toString())
     // add user status online

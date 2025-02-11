@@ -13,9 +13,10 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_URL,
+        origin: "*",
         credentials: true
-    }
+    },
+    transports: ['websocket', 'polling']
 })
 //online user
 const onlineUser = new Set()
@@ -24,6 +25,7 @@ io.on('connection', async (socket) => {
     console.log("connect User ", socket.id)
     // get token
     const token = socket.handshake.auth.token
+    console.log("User token:", socket.handshake.auth.token);
     // current user details
     const user = await getUserDetailsFromToken(token)
     //create room
@@ -137,8 +139,10 @@ io.on('connection', async (socket) => {
 
     //disconnect
     socket.on('disconnect', () => {
-        onlineUser.delete(user?._id?.toString())
-        console.log("disconnect User ", socket.id)
+        if (user?._id) {
+            onlineUser.delete(user._id.toString());
+            console.log("disconnect User ", socket.id);
+        }
     })
 })
 

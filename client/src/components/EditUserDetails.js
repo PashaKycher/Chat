@@ -65,6 +65,7 @@ const EditUserDetails = ({ onClose, user }) => {
             const res = await axios({
                 method: 'post',
                 url: URL,
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 data: restData,
                 withCredentials: true
             })
